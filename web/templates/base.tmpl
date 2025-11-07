@@ -1,0 +1,19 @@
+{{ define "base.tmpl" -}}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{with .Data}}{{.Title}}{{else}}IT Website{{end}}</title>
+    <link rel="stylesheet" href="/static/css/styles.css" />
+  </head>
+  <body>
+    {{ template "header.tmpl" . }}
+    <main class="container">
+      {{ block "content" . }}{{ end }}
+    </main>
+    {{ template "footer.tmpl" . }}
+    <script src="/static/js/main.js"></script>
+  </body>
+</html>
+{{- end }}

@@ -1,0 +1,13 @@
+{{ define "content" }}
+<section>
+  <h1>{{.Data.Title}}</h1>
+  <ul class="cards">
+    {{ range .Data.List }}
+    <li class="card">
+      <h3>{{ .Name }}</h3>
+      <p>{{ .Desc }}</p>
+    </li>
+    {{ end }}
+  </ul>
+</section>
+{{ end }}
