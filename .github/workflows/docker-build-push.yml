@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       # Use the repository owner/name as the image name (e.g. owner/repo)
-      DOCKER_IMAGE_NAME: ${{ github.repository }}
+      DOCKER_IMAGE_NAME: gowobo/${{ github.event.repository.name }}
 
     steps:
     - name: Checkout code
