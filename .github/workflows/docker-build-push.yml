@@ -3,15 +3,16 @@ name: Docker Build and Push
 on:
   push:
     branches: [ "main" ]
+    tags: [ 'v*.*.*' ]
   pull_request:
     branches: [ "main" ]
-
-env:
-  DOCKER_IMAGE_NAME: gowobo/it-website  # Update this with your Docker Hub username
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    env:
+      # Use the repository owner/name as the image name (e.g. owner/repo)
+      DOCKER_IMAGE_NAME: ${{ github.repository }}
 
     steps:
     - name: Checkout code
@@ -29,11 +30,26 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+    - name: Determine image tag
+      id: determine_tag
+      run: |
+        # Set outputs for image tag and short commit sha so they can be used in later steps
+        echo "commit_sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+
+        if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+          TAG_NAME="${GITHUB_REF#refs/tags/}"
+          echo "image_tag=${TAG_NAME}" >> $GITHUB_OUTPUT
+          echo "Detected tag ${TAG_NAME}"
+        else
+          echo "image_tag=latest" >> $GITHUB_OUTPUT
+          echo "Detected branch build, using 'latest'"
+        fi
+
     - name: Build and push Docker image
       uses: docker/build-push-action@v4
       with:
         context: .
         push: ${{ github.event_name != 'pull_request' }}
         tags: |
-          ${{ env.DOCKER_IMAGE_NAME }}:latest
-          ${{ env.DOCKER_IMAGE_NAME }}:${{ github.sha }}
+          ${{ env.DOCKER_IMAGE_NAME }}:${{ steps.determine_tag.outputs.image_tag }}
+          ${{ env.DOCKER_IMAGE_NAME }}:${{ steps.determine_tag.outputs.commit_sha }}
