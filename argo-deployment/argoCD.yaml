@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: it-website
+  namespace: argocd
+spec:
+  destination:
+    namespace: webapps
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: https://github.com/Gbenga1234/it-website.git
+    path: .
+    targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

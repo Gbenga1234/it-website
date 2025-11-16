@@ -1,0 +1,171 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: it-website-deployment
+  labels:
+    app: it-website
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: it-website
+  template:
+    metadata:
+      labels:
+        app: it-website
+    spec:
+      containers:
+        - name: it-website
+          image: gowobo/it-website:latest   # replace with version tag if needed
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "250m"
+              memory: "256Mi"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: it-website-service
+  labels:
+    app: it-website
+spec:
+  selector:
+    app: it-website
+  type: LoadBalancer
+  ports:
+    - port: 80          # external port
+      targetPort: 80    # container port
+      protocol: TCP
+      name: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: it-website-deployment
+  labels:
+    app: it-website
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: it-website
+  template:
+    metadata:
+      labels:
+        app: it-website
+    spec:
+      containers:
+        - name: it-website
+          image: gowobo/it-website:latest   # replace with version tag if needed
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "250m"
+              memory: "256Mi"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: it-website-service
+  labels:
+    app: it-website
+spec:
+  selector:
+    app: it-website
+  type: LoadBalancer
+  ports:
+    - port: 80          # external port
+      targetPort: 80    # container port
+      protocol: TCP
+      name: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: it-website-deployment
+  labels:
+    app: it-website
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: it-website
+  template:
+    metadata:
+      labels:
+        app: it-website
+    spec:
+      containers:
+        - name: it-website
+          image: gowobo/it-website:latest   # replace with version tag if needed
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "250m"
+              memory: "256Mi"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: it-website-service
+  labels:
+    app: it-website
+spec:
+  selector:
+    app: it-website
+  type: LoadBalancer
+  ports:
+    - port: 80          # external port
+      targetPort: 80    # container port
+      protocol: TCP
+      name: http
