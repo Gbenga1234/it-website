@@ -1,0 +1,16 @@
+resources:
+  - ../../base
+
+nameSuffix: -staging
+
+commonLabels:
+  environment: staging
+
+patches:
+  - target:
+      kind: Deployment
+      name: it-website-deployment
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 1

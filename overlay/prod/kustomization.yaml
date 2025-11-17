@@ -1,0 +1,16 @@
+resources:
+  - ../../base
+
+nameSuffix: -prod
+
+commonLabels:
+  environment: prod
+
+patches:
+  - target:
+      kind: Deployment
+      name: it-website-deployment
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 1
